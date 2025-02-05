@@ -72,19 +72,19 @@ export function ProductListPage(){
                             <td>{product.name}</td>
                             <td>{product.price}</td>
                             <td>{product.category?.name}</td>
-                            <td><Link
-                                className="btn btn-primary"
-                                to={`/products/${product.id}`}
-                                >
-                                    Editar
-                                </Link></td>
-                            <td>
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={() => onClickRemove(product.id)}>
-                                    Remover
-                                </button>
-                            </td>
+                            {/*<td><Link*/}
+                            {/*    className="btn btn-primary"*/}
+                            {/*    to={`/products/${product.id}`}*/}
+                            {/*    >*/}
+                            {/*        Editar*/}
+                            {/*    </Link></td>*/}
+                            {/*<td>*/}
+                            {/*    <button*/}
+                            {/*        className="btn btn-danger"*/}
+                            {/*        onClick={() => onClickRemove(product.id)}>*/}
+                            {/*        Remover*/}
+                            {/*    </button>*/}
+                            {/*</td>*/}
                         </tr>
                     ))}
                     </tbody>
