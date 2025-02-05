@@ -24,11 +24,11 @@ export function NavBar() {
           <NavLink to="/" className="nav-link">
             Home
           </NavLink>
-          <NavLink to="/products" className="nav-link">
-              Produtos
-          </NavLink>
           <NavLink to="/categories" className="nav-link">
-              Categorias
+            Categorias
+          </NavLink>
+          <NavLink to="/products" className="nav-link">
+            Produtos
           </NavLink>
         </HStack>
 
