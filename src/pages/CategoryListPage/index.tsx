@@ -47,6 +47,12 @@ export function CategoryListPage() {
 
     return (
         <>
+            {data.map(category => (
+                <div key={category.id}>
+                    {category.name}
+                    <p>Teste</p>
+                </div>
+            ))}
             <main className="container">
                 <div className="text-center">
                     <span className="h3 mb-3 fw-normal">Category List Page</span>

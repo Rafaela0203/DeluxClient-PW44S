@@ -37,8 +37,12 @@ export function NavBar() {
         {/* Ícones de ação */}
         <HStack spacing={4} >
           <IconButton aria-label="Search" icon={<FaSearch />} variant="ghost" color='red.600'/>
-          <IconButton aria-label="Cart" icon={<FaCartShopping />} variant="ghost" color='red.600'/>
-          <IconButton aria-label="User" icon={<FaUser />} variant="ghost" color='red.600'/>
+            <NavLink to="/cart" className="nav-link">
+                <IconButton aria-label="Cart" icon={<FaCartShopping />} variant="ghost" color='red.600'/>
+            </NavLink>
+            <NavLink to="/signup" className="nav-link">
+                <IconButton aria-label="User" icon={<FaUser />} variant="ghost" color='red.600'/>
+            </NavLink>
         </HStack>
       </Flex>
   );
