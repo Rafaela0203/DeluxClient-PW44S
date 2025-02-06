@@ -19,18 +19,19 @@ export function BaseRoutes() {
           {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<UserSignupPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/products" element={<ProductListPage />} />
+          {/*<Route path="/product/:id" element={<ProductPage />} />*/}
+          {/*<Route path="/cart" element={<CartPage />} />*/}
 
           {/* Protected Routes */}
           <Route element={<AuthenticatedRoutes />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/products" element={<ProductListPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/orders" element={<OrdersPlacedPage />} />
-            <Route path="/address" element={<AddressPage />} />
+
+            {/*<Route path="/checkout" element={<CheckoutPage />} />*/}
+            {/*<Route path="/profile" element={<ProfilePage />} />*/}
+            {/*<Route path="/orders" element={<OrdersPlacedPage />} />*/}
+            {/*<Route path="/address" element={<AddressPage />} />*/}
           </Route>
         </Routes>
       </>
