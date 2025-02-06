@@ -7,12 +7,14 @@ import {Box, Grid, GridItem, SimpleGrid} from "@chakra-ui/react";
 
 export function ProductListPage(){
     const [data, setData] = useState<IProduct[]>([]);
+    const [filteredData, setFilteredData] = useState<IProduct[]>([]);
     const [apiError, setApiError] = useState<boolean>(false);
     const [apiMessage, setApiMessage] = useState<string>("");
     const [apiSuccess, setApiSuccess] = useState<boolean>(false);
 
     useEffect(() => {
         loadData();
+        categoryFilter(5);
 
     }, []);
 
@@ -27,6 +29,26 @@ export function ProductListPage(){
             setApiError(true);
             setApiMessage("Falha ao carregar os dados");
             setData([]);
+        }
+    }
+
+    const categoryFilter = async (categoryId?: number) => {
+        setApiError(false);
+        setApiMessage("");
+        setApiSuccess(false);
+        if(categoryId){
+            const response = await ProductService.findByCategory(categoryId);
+            if(response.status === 200){
+                setFilteredData(response.data);
+                console.log(response);
+                console.log(filteredData);
+                setApiSuccess(true);
+                setApiMessage("Produtos carregados");
+            }else {
+                setApiError(true);
+                setApiMessage("Falha ao carregar os dados");
+                setFilteredData([]);
+            }
         }
     }
 
@@ -46,6 +68,7 @@ export function ProductListPage(){
             }
         }
     }
+
     return (
         <>
             <main className="p-3">
@@ -57,13 +80,16 @@ export function ProductListPage(){
                         </Box>
                     ))}
                 </SimpleGrid>
-                {/*<Grid templateColumns='repeat(5, 1fr)' gap={6}>*/}
-                {/*    {data.map(product => (*/}
-                {/*        <GridItem key={product.id}>*/}
-                {/*            <Cards product={product}></Cards>*/}
-                {/*        </GridItem>*/}
-                {/*    ))}*/}
-                {/*</Grid>*/}
+                <div>
+                    <h3>Categoria</h3>
+                    <SimpleGrid minChildWidth='200px' spacing='40px'>
+                        {filteredData.map(product => (
+                            <Box key={product.id}>
+                                <Cards product={product}></Cards>
+                            </Box>
+                        ))}
+                    </SimpleGrid>
+                </div>
                 {apiError && (
                     <div className="alert alert-danger" role="alert">
                         {apiMessage}
