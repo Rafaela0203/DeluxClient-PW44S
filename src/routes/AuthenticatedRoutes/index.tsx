@@ -9,7 +9,7 @@ export function AuthenticatedRoutes() {
     return (
         isAuthenticated ? (
             <>
-                <NavBar />
+                {/*<NavBar />*/}
                 <Outlet />
             </>
         ) : (

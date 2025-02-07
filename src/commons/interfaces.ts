@@ -15,7 +15,7 @@ export interface ICategory{
     name: string;
 }
 
-export interface IProduct {
+export interface IProductInfo {
     id?: number;
     name: string;
     brand: string;
@@ -26,6 +26,15 @@ export interface IProduct {
     ingredients: string;
     image: string;
     category: ICategory;
+}
+
+export interface IProduct {
+    id?: number;
+    name: string;
+    brand: string;
+    description: string;
+    price: number;
+    image: string;
 }
 
 export interface IOrder {
