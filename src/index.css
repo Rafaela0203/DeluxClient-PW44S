@@ -6,3 +6,11 @@
 .form-crud .form-floating:focus-within {
   z-index: 2;
 }
+
+body {
+  background-color: #FFF5F5;
+}
+
+/*body {*/
+/*  font-family: 'Montserrat', sans-serif;*/
+/*}*/

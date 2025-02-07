@@ -1,12 +1,16 @@
 
 export interface IUserSignup {
-    displayName: string;
-    username: string;
+    email: string;
+    name: string;
     password: string;
+    cpf: string;
+    birthDate: string;
+    gender: string;
+    phone: string;
 }
 
 export interface IUserLogin {
-    username: string;
+    email: string;
     password: string;
 }
 
