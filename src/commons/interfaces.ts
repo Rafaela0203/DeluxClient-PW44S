@@ -28,6 +28,19 @@ export interface IProductInfo {
     category: ICategory;
 }
 
+export interface ICartItem {
+    id?: number;
+    name: string;
+    brand: string;
+    description: string;
+    price: number;
+    details: string;
+    quantity: number;
+    ingredients: string;
+    image: string;
+    category: ICategory;
+}
+
 export interface IProduct {
     id?: number;
     name: string;

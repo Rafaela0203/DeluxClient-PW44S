@@ -22,7 +22,7 @@ export function NavBar() {
         {/* Navegação */}
         <HStack spacing={6}>
           <NavLink to="/" className="nav-link">
-            Home
+            HOME
           </NavLink>
           <NavLink to="/products" className="nav-link">
               Produtos
