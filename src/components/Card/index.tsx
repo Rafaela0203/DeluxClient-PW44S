@@ -1,7 +1,16 @@
-import { Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter, ButtonGroup, Button } from '@chakra-ui/react';
+import { Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter } from '@chakra-ui/react';
 import {IProduct} from "@/commons/interfaces.ts";
+import {ButtonAddToCart} from "@/components/ButtonAddToCart";
 
 export function Cards({product}: { product: IProduct }) {
+    const addToCart = (product: IProduct) => {
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+    };
+
+
+
     return (
         <>
             <Card maxW='sm' >
@@ -23,11 +32,7 @@ export function Cards({product}: { product: IProduct }) {
                 </CardBody>
                 <Divider />
                 <CardFooter>
-                    <ButtonGroup spacing='2'>
-                        <Button variant={"ghost"} bg={"red.600"}>
-                            Add to cart
-                        </Button>
-                    </ButtonGroup>
+                    <ButtonAddToCart product={product} onClick={addToCart} />;
                 </CardFooter>
             </Card>
         </>

@@ -40,8 +40,6 @@ export function ProductListPage(){
             const response = await ProductService.findByCategory(categoryId);
             if(response.status === 200){
                 setFilteredData(response.data);
-                console.log(response);
-                console.log(filteredData);
                 setApiSuccess(true);
                 setApiMessage("Produtos carregados");
             }else {
@@ -68,6 +66,8 @@ export function ProductListPage(){
             }
         }
     }
+
+
 
     return (
         <>

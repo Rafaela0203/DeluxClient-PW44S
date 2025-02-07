@@ -23,7 +23,7 @@ export function BaseRoutes() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/products" element={<ProductListPage />} />
           {/*<Route path="/product/:id" element={<ProductPage />} />*/}
-          {/*<Route path="/cart" element={<CartPage />} />*/}
+          <Route path="/cart" element={<CartPage />} />
 
           {/* Protected Routes */}
           <Route element={<AuthenticatedRoutes />}>
