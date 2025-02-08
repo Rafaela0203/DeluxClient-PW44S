@@ -1,42 +1,42 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { IProduct} from "@/commons/interfaces";
-import ProductService from "@/service/ProductService";
 import {Image} from "@chakra-ui/react";
+import {Steps} from "@/components/Stepper/Steps.tsx";
 
 export function CartPage() {
-    // variável de estado para armazenar a lista de categorias
-    const [data, setData] = useState<IProduct[]>([]);
     // variável de estado para armazenar a mensagem de erro da API
+    const [data, setData] = useState<IProduct[]>([])
     const [apiError, setApiError] = useState<String>("");
-    // funções do serviço de categoria
-    const { findAll, remove } = ProductService;
 
     // hook do react para executar ações ao carregar o componente
     // carrega a lista de categorias
     useEffect(() => {
-        //loadData();
+         loadData();
     }, []);
 
-    // função para carregar a lista de produtos
-   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
 
+    const loadData = async () => {
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]")
+        setData(cart);
+    };
     // função para remover uma categoria
     const onClickRemove = async (id?: number) => {
         if (id) {
-            cart.filter((product: IProduct) => {
+            const novoArrayProdutos = data.filter((product: IProduct) => {
                 return product.id !== id;
-            })
-            localStorage.setItem("cart", JSON.stringify(cart));
+            });
+            localStorage.setItem('cart', JSON.stringify(novoArrayProdutos));
+            loadData();
         }
     };
 
     return (
         <>
             <main className="container">
+                <Steps />
                 <div className="text-center">
-                    <span className="h3 mb-3 fw-normal">Lista de Categorias</span>
+                    <span className="h3 mb-3 fw-normal">Carrinho</span>
                 </div>
                 <table className="table table-striped">
                     <thead>
@@ -48,12 +48,12 @@ export function CartPage() {
                     </tr>
                     </thead>
                     <tbody>
-                    {cart.map((product: IProduct) => (
+                    {data.map((product: IProduct) => (
                         <tr key={product.id}>
                             <td><Image
                                 src={product.image}
                                 alt={product.name}
-                                borderRadius='sm'
+                                boxSize={"100px"}
                             /></td>
                             <td>{product.id}</td>
                             <td>{product.name}</td>

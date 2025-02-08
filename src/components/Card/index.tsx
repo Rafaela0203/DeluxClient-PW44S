@@ -1,12 +1,40 @@
-import { Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter } from '@chakra-ui/react';
+import {
+    Card,
+    CardBody,
+    Image,
+    Stack,
+    Heading,
+    Text,
+    Divider,
+    CardFooter,
+    Alert,
+    AlertIcon,
+    useDisclosure,
+    Button,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogCloseButton, AlertDialogBody, AlertDialogFooter
+} from '@chakra-ui/react';
 import {IProduct} from "@/commons/interfaces.ts";
 import {ButtonAddToCart} from "@/components/ButtonAddToCart";
+import React, {useState} from "react";
 
 export function Cards({product}: { product: IProduct }) {
+    const [apiError, setApiError] = useState<String>("");
+
     const addToCart = (product: IProduct) => {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        cart.push(product);
-        localStorage.setItem("cart", JSON.stringify(cart));
+        const selectedProduct = cart.find(item => item.id === product.id);
+        if(selectedProduct) {
+            setApiError("Falha ao carregar lista de categorias.");
+        }else{
+            cart.push(product);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            setApiError("");
+        }
+
     };
 
 
@@ -35,6 +63,7 @@ export function Cards({product}: { product: IProduct }) {
                     <ButtonAddToCart product={product} onClick={addToCart} />;
                 </CardFooter>
             </Card>
+            {apiError && <div className="alert alert-danger">{apiError}</div>}
         </>
     );
 }
