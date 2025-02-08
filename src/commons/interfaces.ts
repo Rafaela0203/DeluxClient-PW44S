@@ -56,7 +56,6 @@ export interface IProduct {
 
 export interface IOrder {
     id?: number;
-    user: IUser;
     address: IAddress;
     orderDate: string;
     payment: string;

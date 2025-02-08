@@ -44,7 +44,6 @@ export function UserSignupPage() {
             setApiSuccess(true);
             setTimeout(() => navigate("/login"), 2000);
 
-
         } else {
             if (response.data.validationErrors) {
                 setErrors(response.data.validationErrors);
