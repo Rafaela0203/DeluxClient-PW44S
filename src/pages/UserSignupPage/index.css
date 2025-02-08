@@ -1,6 +1,7 @@
 .form-signup {
     max-width: 400px;
     padding: 15px;
+    color: #CC3733;
 }
 
 .form-signup .form-floating:focus-within {
@@ -8,6 +9,7 @@
 }
 
 .form-signup input {
+    border-color: #FED7D7;
     margin-bottom: 10px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
@@ -23,4 +25,34 @@
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+.form-signup input:focus {
+    border-color: #FED7D7 !important;
+    box-shadow: 0 0 5px rgba(204, 55, 51, 0.5);
+    outline: none;
+}
+
+.form-signup input:focus-visible {
+    border-color: #FED7D7 !important;
+    box-shadow: 0 0 5px rgba(204, 55, 51, 0.5);
+}
+
+.form-signup input[type="text"]:focus,
+.form-signup input[type="number"]:focus {
+    border-color: #FED7D7 !important;
+    box-shadow: 0 0 5px rgba(204, 55, 51, 0.5);
+}
+
+input[type="date"] {
+    color: #CC3733 !important; /* Muda a cor do texto */
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(33%) sepia(100%) saturate(1000%) hue-rotate(340deg);
+}
+
+.btn {
+    color: white !important;
+    background-color: #F56565 !important;
 }
