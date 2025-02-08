@@ -1,12 +1,22 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IProduct} from "@/commons/interfaces";
-import {Image} from "@chakra-ui/react";
+import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay, Button,
+    Image, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper
+} from "@chakra-ui/react";
 import {Steps} from "@/components/Stepper/Steps.tsx";
 
 export function CartPage() {
     // variável de estado para armazenar a mensagem de erro da API
     const [data, setData] = useState<IProduct[]>([])
-    const [apiError, setApiError] = useState<String>("");
+    const [isOpen, setIsOpen] = useState(false);
+    const onClose = () => setIsOpen(false);
+    const cancelRef = React.useRef();
 
     // hook do react para executar ações ao carregar o componente
     // carrega a lista de categorias
@@ -27,6 +37,7 @@ export function CartPage() {
                 return product.id !== id;
             });
             localStorage.setItem('cart', JSON.stringify(novoArrayProdutos));
+            setIsOpen(true);
             loadData();
         }
     };
@@ -55,8 +66,15 @@ export function CartPage() {
                                 alt={product.name}
                                 boxSize={"100px"}
                             /></td>
-                            <td>{product.id}</td>
                             <td>{product.name}</td>
+                            <td><NumberInput defaultValue={1} min={1} maxW={20}>
+                                <NumberInputField />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                            </NumberInput></td>
+                            <td>R${(product.price).toFixed(2)}</td>
                             <td>
                                 <button
                                     className="btn btn-danger"
@@ -69,7 +87,22 @@ export function CartPage() {
                     ))}
                     </tbody>
                 </table>
-                {apiError && <div className="alert alert-danger">{apiError}</div>}
+                <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+                    <AlertDialogOverlay>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>Produto já no carrinho</AlertDialogHeader>
+                            <AlertDialogBody>Esse produto já foi adicionado ao carrinho.</AlertDialogBody>
+                            <AlertDialogFooter>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                    Cancel
+                                </Button>
+                                <Button onClick={onClose}>
+                                    OK
+                                </Button>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
             </main>
         </>
     );

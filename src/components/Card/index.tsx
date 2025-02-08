@@ -15,24 +15,37 @@ import {
     AlertDialogOverlay,
     AlertDialogContent,
     AlertDialogHeader,
-    AlertDialogCloseButton, AlertDialogBody, AlertDialogFooter
+    AlertDialogCloseButton, AlertDialogBody, AlertDialogFooter, useToast
 } from '@chakra-ui/react';
 import {IProduct} from "@/commons/interfaces.ts";
 import {ButtonAddToCart} from "@/components/ButtonAddToCart";
 import React, {useState} from "react";
 
 export function Cards({product}: { product: IProduct }) {
-    const [apiError, setApiError] = useState<String>("");
+    const [isOpen, setIsOpen] = useState(false);
+    const onClose = () => setIsOpen(false);
+    const cancelRef = React.useRef();
+    const toast = useToast();
 
     const addToCart = (product: IProduct) => {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
         const selectedProduct = cart.find(item => item.id === product.id);
         if(selectedProduct) {
-            setApiError("Falha ao carregar lista de categorias.");
+            setIsOpen(true);
+            return;
         }else{
             cart.push(product);
             localStorage.setItem("cart", JSON.stringify(cart));
-            setApiError("");
+            toast({
+                title: "Produto adicionado",
+                description: "O produto foi adicionado ao carrinho.",
+                status: "success",
+                duration: 3000, // Tempo que a mensagem fica visível (em ms)
+                isClosable: true, // Permite fechar manualmente
+                position: "top-right", // Posição na tela
+            })
+            return;
         }
 
     };
@@ -63,7 +76,20 @@ export function Cards({product}: { product: IProduct }) {
                     <ButtonAddToCart product={product} onClick={addToCart} />;
                 </CardFooter>
             </Card>
-            {apiError && <div className="alert alert-danger">{apiError}</div>}
+            <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>Produto já no carrinho</AlertDialogHeader>
+                        <AlertDialogBody>Esse produto já foi adicionado ao carrinho.</AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+
         </>
     );
 }
