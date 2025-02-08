@@ -158,7 +158,7 @@ export function UserSignupPage() {
                     <ButtonWithProgress
                         disabled={pendingApiCall}
                         pendingApiCall={pendingApiCall}
-                        className="w-100 btn btn-lg btn-primary mb-3"
+                        className="w-100 btn btn-lg mb-3"
                         text="Cadastrar"
                         onClick={onClickSignup}
                     />

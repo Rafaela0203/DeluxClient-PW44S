@@ -3,6 +3,7 @@ import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { useNavigate } from "react-router-dom";
 import { IAddress } from "@/commons/interfaces.ts";
 import AddressService from "@/service/AddressService";
+import './index.css';
 
 export function AddressPage() {
     const [form, setForm] = useState<IAddress>({
@@ -143,7 +144,7 @@ export function AddressPage() {
                 {apiError && <div className="alert alert-danger">Falha ao salvar o endereço!</div>}
                 {apiSuccess && <div className="alert alert-success">Endereço salvo com sucesso!</div>}
                 <div className="text-center">
-                    <ButtonWithProgress disabled={pendingApiCall} pendingApiCall={pendingApiCall} className="w-100 btn btn-lg btn-primary mb-3" text="Salvar" onClick={onClickSave} />
+                    <ButtonWithProgress disabled={pendingApiCall} pendingApiCall={pendingApiCall} className="w-100 btn btn-lg mb-3" text="Salvar"  onClick={onClickSave} />
                 </div>
             </form>
         </main>
