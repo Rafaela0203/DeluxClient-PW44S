@@ -3,7 +3,7 @@ import {Cards} from "@/components/Card";
 import ProductService from "@/service/ProductService.ts";
 import {useEffect, useState} from "react";
 import {IProduct} from "@/commons/interfaces.ts";
-import {Grid, GridItem} from "@chakra-ui/react";
+import {Box, Grid, GridItem, SimpleGrid} from "@chakra-ui/react";
 
 export function HomePage() {
     const [data, setData] = useState<IProduct[]>([]);
@@ -30,34 +30,18 @@ export function HomePage() {
         }
     }
 
-    const onClickRemove = async (id?: number) => {
-        setApiError(false);
-        setApiMessage("");
-        setApiSuccess(false);
-        if(id){
-            const response = await ProductService.remove(id);
-            if (response.status === 204) {
-                setData(data.filter((product) => product.id !== id));
-                setApiSuccess(true);
-                setApiMessage("Produto removido com sucesso");
-            }else {
-                setApiError(true);
-                setApiMessage("Falha ao remover o produto");
-            }
-        }
-    }
     return (
     <>
       <div className="text-center p-4">
         <ChakraCarousel />
       </div>
-        <Grid templateColumns='repeat(5, 1fr)' gap={6}>
+        <SimpleGrid minChildWidth='200px' spacing='40px'>
             {data.map(product => (
-                <GridItem w='100%' h='10' key={product.id}>
+                <Box key={product.id}>
                     <Cards product={product}></Cards>
-                </GridItem>
+                </Box>
             ))}
-        </Grid>
+        </SimpleGrid>
         <div>
 
         </div>
