@@ -3,6 +3,18 @@ import { IAddress } from "@/commons/interfaces.ts";
 
 const ADDRESS_URL = "/addresses";
 
+// Buscar todos os endereços
+const findAll = async (): Promise<IAddress[] | undefined> => {
+    try {
+        const response = await api.get(ADDRESS_URL);
+        return response.data; // Retorna a lista de endereços
+    } catch (error) {
+        console.error("Erro ao buscar endereços:", error);
+        return undefined; // Retorna undefined em caso de erro
+    }
+};
+
+// Salvar um novo endereço
 const save = async (address: IAddress): Promise<Response | undefined> => {
     try {
         return await api.post(ADDRESS_URL, address);
@@ -14,6 +26,18 @@ const save = async (address: IAddress): Promise<Response | undefined> => {
     }
 };
 
+// Remover um endereço pelo ID
+const remove = async (id: number): Promise<boolean> => {
+    try {
+        await api.delete(`${ADDRESS_URL}/${id}`);
+        return true; // Indica que a remoção foi bem-sucedida
+    } catch (error) {
+        console.error(`Erro ao remover o endereço com ID ${id}:`, error);
+        return false; // Retorna false caso ocorra erro
+    }
+};
+
+// Buscar endereço pelo CEP usando ViaCEP
 const getAddressByCEP = async (cep: string): Promise<any> => {
     try {
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
@@ -30,30 +54,12 @@ const getAddressByCEP = async (cep: string): Promise<any> => {
     }
 };
 
+// Exportando o serviço com as funções disponíveis
 const AddressService = {
+    findAll,
     getAddressByCEP,
-    save
+    save,
+    remove,
 };
 
 export default AddressService;
-
-// export function ProfilePage() {
-//     const [user, setUser] = useState<IUser | null>(null);
-//     const [apiError, setApiError] = useState(false);
-//     const navigate = useNavigate();
-//
-//     useEffect(() => {
-//         loadUser();
-//     }, []);
-//
-//     const loadUser = async () => {
-//         setApiError(false);
-//         const response = await UserService.getProfile();
-//         if (response.status === 200) {
-//             setUser(response.data);
-//         } else {
-//             setApiError(true);
-//         }
-//     };
-//
-// }
