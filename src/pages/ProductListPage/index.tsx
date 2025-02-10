@@ -95,11 +95,6 @@ export function ProductListPage(){
                         {apiMessage}
                     </div>
                 )}
-                {apiSuccess && (
-                    <div className="alert alert-success" role="alert">
-                        {apiMessage}
-                    </div>
-                )}
             </main>
 
         </>
