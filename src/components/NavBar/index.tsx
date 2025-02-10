@@ -15,6 +15,7 @@ import {
 import { FaUser, FaSearch } from "react-icons/fa";
 import { FaCartShopping, FaHeart } from "react-icons/fa6";
 import './index.css';
+import AuthService from "@/service/AuthService.ts";
 
 export function NavBar() {
     const navigate = useNavigate();
@@ -23,6 +24,11 @@ export function NavBar() {
 
     const handleUserClick = () => {
         navigate("/login"); // Redireciona para login ao clicar
+    };
+
+    const onClickLogout = () => {
+        AuthService.logout();
+        navigate("/login");
     };
 
     return (
@@ -54,9 +60,9 @@ export function NavBar() {
                         onMouseLeave={() => setIsMenuOpen(false)}
                         zIndex="popover"
                     >
-                        <MenuItem>Meus Pedidos</MenuItem>
-                        <MenuItem>Endereços</MenuItem>
-                        <MenuItem>Sair</MenuItem>
+                        <MenuItem>Categoria 1</MenuItem>
+                        <MenuItem>Categoria 2</MenuItem>
+                        <MenuItem>Categoria 3</MenuItem>
                     </MenuList>
                 </Menu>
             </HStack>
@@ -71,7 +77,7 @@ export function NavBar() {
                 </InputGroup>
 
                 <NavLink to="/cart">
-                    <IconButton aria-label="Cart" icon={<FaHeart />} variant="ghost" color='red.600' />
+                    <IconButton aria-label="Heart" icon={<FaHeart />} variant="ghost" color='red.600' />
                 </NavLink>
 
                 <NavLink to="/cart">
@@ -95,11 +101,15 @@ export function NavBar() {
                         onMouseLeave={() => setIsUserMenuOpen(false)}
                         zIndex="popover"
                     >
-                        <MenuItem><NavLink to="/profile" className="nav-link">Perfil</NavLink></MenuItem>
+                        <NavLink to="/profile" className="nav-link"><MenuItem>Perfil</MenuItem></NavLink>
                         <MenuItem>Meus Pedidos</MenuItem>
                         <MenuItem>Endereços</MenuItem>
                         <MenuDivider />
-                        <MenuItem>Sair</MenuItem>
+                        <MenuItem>
+                        <button onClick={onClickLogout}>
+                            &times; Sair
+                        </button>
+                        </MenuItem>
                     </MenuList>
                 </Menu>
             </HStack>
