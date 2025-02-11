@@ -4,7 +4,10 @@ import { IUserSignup, IAddress, IOrder } from "@/commons/interfaces.ts";
 import UserService from "@/service/UserService";
 import AddressService from "@/service/AddressService";
 import OrderService from "@/service/OrderService";
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Box, Button, Text, IconButton } from "@chakra-ui/react";
+import {
+    Tabs, TabList, TabPanels, Tab, TabPanel,
+    Box, Button, Text, IconButton
+} from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa"; // Ícone de lixeira para excluir
 
 export function ProfilePage() {
@@ -64,18 +67,15 @@ export function ProfilePage() {
         }
     };
 
-    const onClickRemoveAddress = async (id?: number) => {
-        if (id) {
-            try {
-                await AddressService.remove(id); // Remove do backend
-                const novoArrayEnderecos = addresses.filter((address: IAddress) => address.id !== id);
-                setAddresses(novoArrayEnderecos); // Atualiza o estado local
-            } catch (error) {
-                console.error("Erro ao remover endereço:", error);
-            }
+    const onClickRemoveAddress = async (id: number) => {
+        try {
+            await AddressService.remove(id);
+            setAddresses(addresses.filter((address) => address.id !== id));
+        } catch (error) {
+            console.error("Erro ao remover endereço:", error);
         }
+        loadAddresses();
     };
-
 
     return (
         <Box className="container" p={4}>
@@ -91,7 +91,7 @@ export function ProfilePage() {
                     </TabList>
 
                     <TabPanels>
-                        {/* Painel do Perfil - Restaurado para versão anterior */}
+                        {/* Painel do Perfil */}
                         <TabPanel>
                             <Box>
                                 <h1 className="h3 mb-3 fw-normal text-center">Perfil</h1>
@@ -104,37 +104,37 @@ export function ProfilePage() {
                             </Box>
                         </TabPanel>
 
-                        {/* Painel de Endereços - Agora com botão de excluir */}<TabPanel>
-                        <Box>
-                            <Text fontSize="lg" fontWeight="bold">Meus Endereços</Text>
-                            {addresses.length > 0 ? (
-                                addresses.map((address) => (
-                                    <Box key={address.id} borderWidth="1px" borderRadius="lg" p={4} mt={2} display="flex" justifyContent="space-between" alignItems="center">
-                                        <Box>
-                                            <Text><strong>Rua:</strong> {address.street}, {address.number}</Text>
-                                            <Text><strong>Bairro:</strong> {address.neighborhood}</Text>
-                                            <Text><strong>Cidade:</strong> {address.city} - {address.state}</Text>
-                                            <Text><strong>CEP:</strong> {address.zip}</Text>
+                        {/* Painel de Endereços */}
+                        <TabPanel>
+                            <Box>
+                                <Text fontSize="lg" fontWeight="bold">Meus Endereços</Text>
+                                {addresses.length > 0 ? (
+                                    addresses.map((address) => (
+                                        <Box key={address.id} borderWidth="1px" borderRadius="lg" p={4} mt={2} display="flex" justifyContent="space-between" alignItems="center">
+                                            <Box>
+                                                <Text><strong>Rua:</strong> {address.street}, {address.number}</Text>
+                                                <Text><strong>Bairro:</strong> {address.neighborhood}</Text>
+                                                <Text><strong>Cidade:</strong> {address.city} - {address.state}</Text>
+                                                <Text><strong>CEP:</strong> {address.zip}</Text>
+                                            </Box>
+                                            <IconButton
+                                                aria-label="Excluir Endereço"
+                                                icon={<FaTrash />}
+                                                colorScheme="red"
+                                                onClick={() => onClickRemoveAddress(address.id)}
+                                            />
                                         </Box>
-                                        <IconButton
-                                            aria-label="Excluir Endereço"
-                                            icon={<FaTrash />}
-                                            colorScheme="red"
-                                            onClick={() => onClickRemoveAddress(address.id)}
-                                        />
-                                    </Box>
-                                ))
-                            ) : (
-                                <Text className="alert alert-warning">Nenhum endereço cadastrado.</Text>
-                            )}
-                            <Button colorScheme="red" mt={3} onClick={() => navigate("/address")}>
-                                Adicionar Endereço
-                            </Button>
-                        </Box>
-                    </TabPanel>
+                                    ))
+                                ) : (
+                                    <Text className="alert alert-warning">Nenhum endereço cadastrado.</Text>
+                                )}
+                                <Button colorScheme="red" mt={3} onClick={() => navigate("/address")}>
+                                    Adicionar Endereço
+                                </Button>
+                            </Box>
+                        </TabPanel>
 
-
-                        {/* Painel de Meus Pedidos - Mantido com as melhorias */}
+                        {/* Painel de Meus Pedidos */}
                         <TabPanel>
                             <Box>
                                 <Text fontSize="lg" fontWeight="bold">Meus Pedidos</Text>
