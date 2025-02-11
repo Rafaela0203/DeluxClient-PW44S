@@ -46,8 +46,8 @@ export function ButtonAddToCart({ product }: IButtonAddToCart) {
 
     return (
         <>
-            <Button variant="ghost" bg="red.600" onClick={() => addToCart(product)}>
-                Add to cart
+            <Button  colorScheme={"red"} onClick={() => addToCart(product)}>
+                Comprar
             </Button>
 
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>

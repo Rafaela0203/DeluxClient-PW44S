@@ -71,7 +71,7 @@ export function ProductListPage(){
 
     return (
         <>
-            <main className="p-3">
+            <main className="p-3 container">
 
                 <SimpleGrid minChildWidth='200px' spacing='40px'>
                     {data.map(product => (

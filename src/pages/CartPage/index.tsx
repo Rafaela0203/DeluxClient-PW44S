@@ -14,6 +14,8 @@ import {
 import { Steps } from "@/components/Stepper/Steps.tsx";
 import { QuantityInput } from "@/components/QuantityInput";
 import { FaTrashAlt } from "react-icons/fa";
+import AddressService from "@/service/AddressService.ts";
+import {Link} from "react-router-dom";
 
 export function CartPage() {
     const [data, setData] = useState<IProduct[]>([]);
@@ -60,11 +62,15 @@ export function CartPage() {
 
     const calculateShipping = () => {
         if (cep.length === 8) {
+            // const addressData = await AddressService.getAddressByCEP(cep.zip);
+            // if (addressData) {}
             setShipping(15.00);
         } else {
             setShipping(0);
         }
     };
+
+    const formatPrice = (price: number) => price.toFixed(2).replace(".", ",");
 
     const subtotal = data.reduce((acc, product) => acc + product.price * product.cartQuantity, 0);
     const total = subtotal + shipping;
@@ -72,9 +78,8 @@ export function CartPage() {
     return (
         <>
             <main className="container">
-                <Steps />
-                <div className="text-center">
-                    <span className="h3 mb-3 fw-normal">Carrinho</span>
+                <div className="p-4">
+                    <span className="h3 mb-3 fw-bold">Meu Carrinho</span>
                 </div>
                 <Flex>
                     <Box flex='2' p={'4'}>
@@ -105,7 +110,7 @@ export function CartPage() {
                                                 initialValue={product.cartQuantity || 1}
                                             />
                                         </Td>
-                                        <Td>R${(product.price * product.cartQuantity).toFixed(2)}</Td>
+                                        <Td>R$ {formatPrice(product.price * product.cartQuantity)}</Td>
                                         <Td>
                                             <IconButton
                                                 aria-label='delete'
@@ -130,26 +135,28 @@ export function CartPage() {
                                 <Tbody>
                                     <Tr>
                                         <Td>Subtotal</Td>
-                                        <Td isNumeric>R$ {subtotal.toFixed(2)}</Td>
+                                        <Td isNumeric>R$ {formatPrice(subtotal)}</Td>
                                     </Tr>
                                     <Tr>
                                         <Td>Frete</Td>
-                                        <Td isNumeric>R$ {shipping.toFixed(2)}</Td>
+                                        <Td isNumeric>R$ {formatPrice(shipping)}</Td>
                                     </Tr>
                                     <Tr fontWeight="bold">
                                         <Td>Total</Td>
-                                        <Td isNumeric>R$ {total.toFixed(2)}</Td>
+                                        <Td isNumeric>R$ {formatPrice(total)}</Td>
                                     </Tr>
                                     <Tr>
                                         <Td colSpan={2}>
                                             <FormControl>
                                                 <FormLabel>Calcular Frete</FormLabel>
-                                                <Input
-                                                    placeholder="Digite seu CEP"
-                                                    value={cep}
-                                                    onChange={(e) => setCep(e.target.value)}
-                                                    onBlur={calculateShipping}
-                                                />
+                                                <Flex>
+                                                    <Input
+                                                        placeholder="Digite seu CEP"
+                                                        value={cep}
+                                                        onChange={(e) => setCep(e.target.value)}
+                                                    />
+                                                    <Button ml={2} colorScheme="blue" onClick={calculateShipping}>Calcular</Button>
+                                                </Flex>
                                             </FormControl>
                                         </Td>
                                     </Tr>
@@ -157,9 +164,9 @@ export function CartPage() {
                                 <Tfoot>
                                     <Tr>
                                         <Td colSpan={2} textAlign="center">
-                                            <Button colorScheme="green" width="full">
+                                            <Link to={"/login"}><Button colorScheme="green" width="full">
                                                 Finalizar Compra
-                                            </Button>
+                                            </Button></Link>
                                         </Td>
                                     </Tr>
                                 </Tfoot>
