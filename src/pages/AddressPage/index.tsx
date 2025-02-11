@@ -74,7 +74,7 @@ export function AddressPage() {
                         className="form-control"
                         placeholder="CEP"
                         name="zip"
-                        value={form.zip}
+                        value={form.zip.replace(/\D/g, "")}
                         onChange={onChange}
                         onBlur={onBlurCEP}
                     />

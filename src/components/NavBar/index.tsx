@@ -5,7 +5,10 @@ import {
     Box,
     Flex,
     HStack,
-    IconButton, Input, InputGroup, InputRightElement,
+    IconButton,
+    Input,
+    InputGroup,
+    InputRightElement,
     Menu,
     MenuButton,
     MenuDivider,
@@ -14,16 +17,17 @@ import {
 } from "@chakra-ui/react";
 import { FaUser, FaSearch } from "react-icons/fa";
 import { FaCartShopping, FaHeart } from "react-icons/fa6";
-import './index.css';
+import "./index.css";
 import AuthService from "@/service/AuthService.ts";
 
 export function NavBar() {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Controle do menu do usuário
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState(""); // Estado para armazenar o termo de busca
 
     const handleUserClick = () => {
-        navigate("/login"); // Redireciona para login ao clicar
+        navigate("/login");
     };
 
     const onClickLogout = () => {
@@ -31,13 +35,18 @@ export function NavBar() {
         navigate("/login");
     };
 
-    return (
-        <Flex id='nav-bar' zIndex={2} align="center" p={2} bg="red.100" boxShadow="sm" fontWeight='bold' color='red.600' position="relative">
+    const handleSearch = () => {
+        if (searchQuery.trim()) {
+            navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+        }
+    };
 
+    return (
+        <Flex id="nav-bar" zIndex={2} align="center" p={2} bg="red.100" boxShadow="sm" fontWeight="bold" color="red.600" position="relative">
             {/* LOGO */}
-            <Box w='150px'>
+            <Box w="150px">
                 <Link to="/">
-                    <img src={logo} width="90px" alt="Delux"/>
+                    <img src={logo} width="90px" alt="Delux" />
                 </Link>
             </Box>
 
@@ -47,7 +56,7 @@ export function NavBar() {
                 <NavLink to="/products" className="nav-link">PROMOS</NavLink>
                 <NavLink to="/products" className="nav-link">PRODUTOS</NavLink>
 
-                {/* MENU DE CATEGORIAS QUE ABRE AO PASSAR O MOUSE */}
+                {/* MENU DE CATEGORIAS */}
                 <Menu isOpen={isMenuOpen}>
                     <MenuButton
                         onMouseEnter={() => setIsMenuOpen(true)}
@@ -70,21 +79,33 @@ export function NavBar() {
             {/* ÍCONES E BARRA DE PESQUISA */}
             <HStack spacing={4} ml="auto">
                 <InputGroup>
-                    <InputRightElement pointerEvents='none'>
-                        <FaSearch color='red.300' />
+                    <Input
+                        type="search"
+                        placeholder="Buscar produtos..."
+                        focusBorderColor="red.200"
+                        bg={"red.25"}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Permite buscar pressionando Enter
+                    />
+                    <InputRightElement>
+                        <IconButton
+                            aria-label="Buscar"
+                            icon={<FaSearch color="red.300" />}
+                            onClick={handleSearch} // Chama a busca ao clicar no ícone
+                        />
                     </InputRightElement>
-                    <Input type='search' focusBorderColor='red.200' bg={"red.25"} />
                 </InputGroup>
 
                 <NavLink to="/cart">
-                    <IconButton aria-label="Heart" icon={<FaHeart />} variant="ghost" color='red.600' />
+                    <IconButton aria-label="Heart" icon={<FaHeart />} variant="ghost" color="red.600" />
                 </NavLink>
 
                 <NavLink to="/cart">
-                    <IconButton aria-label="Cart" icon={<FaCartShopping />} variant="ghost" color='red.600' />
+                    <IconButton aria-label="Cart" icon={<FaCartShopping />} variant="ghost" color="red.600" />
                 </NavLink>
 
-                {/* MENU DO USUÁRIO QUE ABRE AO PASSAR O MOUSE */}
+                {/* MENU DO USUÁRIO */}
                 <Menu isOpen={isUserMenuOpen}>
                     <MenuButton
                         as={IconButton}
@@ -94,7 +115,7 @@ export function NavBar() {
                         color="red.600"
                         onMouseEnter={() => setIsUserMenuOpen(true)}
                         onMouseLeave={() => setIsUserMenuOpen(false)}
-                        onClick={handleUserClick} // Redireciona para login ao clicar
+                        onClick={handleUserClick}
                     />
                     <MenuList
                         onMouseEnter={() => setIsUserMenuOpen(true)}
@@ -106,9 +127,9 @@ export function NavBar() {
                         <MenuItem>Endereços</MenuItem>
                         <MenuDivider />
                         <MenuItem>
-                        <button onClick={onClickLogout}>
-                            &times; Sair
-                        </button>
+                            <button onClick={onClickLogout}>
+                                Sair
+                            </button>
                         </MenuItem>
                     </MenuList>
                 </Menu>
