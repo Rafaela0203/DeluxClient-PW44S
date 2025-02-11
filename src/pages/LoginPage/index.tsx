@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import "./index.css";
+c
 import { IUserLogin } from "@/commons/interfaces.ts";
 import AuthService from "@/service/AuthService";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
@@ -79,7 +79,7 @@ export function LoginPage() {
                     <ButtonWithProgress
                         disabled={pendingApiCall}
                         pendingApiCall={pendingApiCall}
-                        className="w-100 btn btn-lg btn-primary mb-3"
+                        className="w-100 btn btn-lg mb-3"
                         text="Login"
                         onClick={onClickLogin}
                     />

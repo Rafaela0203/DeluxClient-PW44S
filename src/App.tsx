@@ -2,6 +2,7 @@ import {ChakraProvider} from "@chakra-ui/react";
 import './App.css'
 import { BaseRoutes } from './routes/BaseRoutes'
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 
 export function App() {
@@ -11,6 +12,7 @@ export function App() {
       <ChakraProvider>
           <NavBar />
           <BaseRoutes />
+          <Footer />
       </ChakraProvider>
     </>
   )

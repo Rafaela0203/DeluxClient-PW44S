@@ -1,0 +1,25 @@
+/* Garante que a página ocupe toda a altura da tela */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Faz com que o conteúdo principal cresça e empurre o footer para baixo */
+#root, .container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Footer fixado na parte inferior */
+.footer {
+    background-color: #FED7D7; /* Fundo rosa */
+    color: #CC3733; /* Texto vermelho */
+    text-align: center;
+    padding: 20px 10px;
+    width: 100%;
+    margin-top: auto; /* Faz o footer ser empurrado para baixo */
+}

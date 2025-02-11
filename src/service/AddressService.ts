@@ -27,14 +27,14 @@ const save = async (address: IAddress): Promise<Response | undefined> => {
 };
 
 // Remover um endereço pelo ID
-const remove = async (id: number): Promise<boolean> => {
+const remove = async (id: number): Promise<any> => {
+    let response;
     try {
-        await api.delete(`${ADDRESS_URL}/${id}`);
-        return true; // Indica que a remoção foi bem-sucedida
-    } catch (error) {
-        console.error(`Erro ao remover o endereço com ID ${id}:`, error);
-        return false; // Retorna false caso ocorra erro
+        response = await api.delete(`${ADDRESS_URL}/${id}`);
+    } catch (error: any) {
+        response = error.response // Retorna false caso ocorra erro
     }
+    return response;
 };
 
 // Buscar endereço pelo CEP usando ViaCEP
