@@ -11,11 +11,10 @@ import {
     Image,
     Flex, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, Box, IconButton, Center, Input, FormControl, FormLabel
 } from "@chakra-ui/react";
-import { Steps } from "@/components/Stepper/Steps.tsx";
 import { QuantityInput } from "@/components/QuantityInput";
 import { FaTrashAlt } from "react-icons/fa";
-import AddressService from "@/service/AddressService.ts";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import AuthService from "@/service/AuthService.ts";
 
 export function CartPage() {
     const [data, setData] = useState<IProduct[]>([]);
@@ -24,6 +23,8 @@ export function CartPage() {
     const [cep, setCep] = useState("");
     const [shipping, setShipping] = useState(0);
     const cancelRef = React.useRef();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         loadData();
@@ -70,6 +71,15 @@ export function CartPage() {
         }
     };
 
+    const handleCheckout = () => {
+        if (AuthService.isAuthenticated()) {
+            navigate("/checkout");
+        } else {
+            localStorage.setItem("redirectAfterLogin", "/checkout");
+            navigate("/login");
+        }
+    };
+
     const formatPrice = (price: number) => price.toFixed(2).replace(".", ",");
 
     const subtotal = data.reduce((acc, product) => acc + product.price * product.cartQuantity, 0);
@@ -77,7 +87,7 @@ export function CartPage() {
 
     return (
         <>
-            <main className="container">
+            <main className="mt-3 container">
                 <div className="p-4">
                     <span className="h3 mb-3 fw-bold">Meu Carrinho</span>
                 </div>
@@ -124,7 +134,7 @@ export function CartPage() {
                             </Tbody>
                         </Table>
                     </Box>
-                    <Box flex='1' p={'4'} border="1px solid #E2E8F0" borderRadius="md">
+                    <Box flex='1' p={'4'} >
                         <TableContainer>
                             <Table variant="simple">
                                 <Thead>
@@ -155,7 +165,7 @@ export function CartPage() {
                                                         value={cep}
                                                         onChange={(e) => setCep(e.target.value)}
                                                     />
-                                                    <Button ml={2} colorScheme="blue" onClick={calculateShipping}>Calcular</Button>
+                                                    <Button ml={2} color="white" bg="red.600" onClick={calculateShipping}>Calcular</Button>
                                                 </Flex>
                                             </FormControl>
                                         </Td>
@@ -164,9 +174,9 @@ export function CartPage() {
                                 <Tfoot>
                                     <Tr>
                                         <Td colSpan={2} textAlign="center">
-                                            <Link to={"/login"}><Button colorScheme="green" width="full">
-                                                Finalizar Compra
-                                            </Button></Link>
+                                                <Button color="white" bg="red.600" width="full" onClick={handleCheckout}>
+                                                    Finalizar Compra
+                                                </Button>
                                         </Td>
                                     </Tr>
                                 </Tfoot>

@@ -32,19 +32,19 @@ export function HomePage() {
 
     return (
     <>
-      <div className="text-center p-4">
-        <ChakraCarousel />
-      </div>
-        <SimpleGrid minChildWidth='200px' spacing='40px'>
-            {data.map(product => (
-                <Box key={product.id}>
-                    <Cards product={product}></Cards>
-                </Box>
-            ))}
-        </SimpleGrid>
-        <div>
+        <main className={"container"}>
+            <div className="text-center p-4">
+                <ChakraCarousel/>
+            </div>
+            <SimpleGrid minChildWidth='200px' spacing='40px'>
+                {data.map(product => (
+                    <Box key={product.id}>
+                        <Cards product={product}></Cards>
+                    </Box>
+                ))}
+            </SimpleGrid>
+        </main>
 
-        </div>
     </>
-  );
+    );
 }

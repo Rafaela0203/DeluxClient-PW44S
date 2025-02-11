@@ -46,7 +46,7 @@ export function ButtonAddToCart({ product }: IButtonAddToCart) {
 
     return (
         <>
-            <Button  colorScheme={"red"} onClick={() => addToCart(product)}>
+            <Button  color="white" bg="red.600" onClick={() => addToCart(product)}>
                 Comprar
             </Button>
 

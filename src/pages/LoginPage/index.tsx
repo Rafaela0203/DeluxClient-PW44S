@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import { IUserLogin } from "@/commons/interfaces.ts";
 import AuthService from "@/service/AuthService";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
@@ -14,6 +14,14 @@ export function LoginPage() {
     const [apiError, setApiError] = useState(false);
     const [apiSuccess, setApiSuccess] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (AuthService.isAuthenticated()) {
+            const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
+            localStorage.removeItem("redirectAfterLogin");
+            navigate(redirectPath);
+        }
+    }, []);
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
