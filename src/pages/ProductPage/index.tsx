@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { IProductInfo } from "@/commons/interfaces.ts";
+import {IProduct, IProductInfo} from "@/commons/interfaces.ts";
 import ProductService from "@/service/ProductService";
 import {
-    Box, Image, Text, Heading, Button, Stack, Divider, Input, Flex, Badge, VStack
+    Box, Image, Text, Heading, Button, Stack, Divider, Input, Flex, Badge, VStack, SimpleGrid
 } from "@chakra-ui/react";
+import {Cards} from "@/components/Card";
 
 export function ProductPage() {
     const { id } = useParams();
     const [product, setProduct] = useState<IProductInfo | null>(null);
+    const [filteredData, setFilteredData] = useState<IProduct[]>([]);
     const [apiError, setApiError] = useState(false);
     const [installmentPrice, setInstallmentPrice] = useState<string>("");
 
     useEffect(() => {
         loadProduct();
+        categoryFilter(product?.category.id)
     }, [id]);
 
     const loadProduct = async () => {
@@ -29,6 +32,24 @@ export function ProductPage() {
             setApiError(true);
         }
     };
+
+    const categoryFilter = async (categoryId?: number) => {
+        // setApiError(false);
+        // setApiMessage("");
+        // setApiSuccess(false);
+        if(categoryId){
+            const response = await ProductService.findByCategory(categoryId);
+            if(response.status === 200){
+                setFilteredData(response.data);
+                // setApiSuccess(true);
+                // setApiMessage("Produtos carregados");
+            }else {
+                // setApiError(true);
+                // setApiMessage("Falha ao carregar os dados");
+                setFilteredData([]);
+            }
+        }
+    }
 
     return (
         <Box className="container" p={6}>
@@ -92,11 +113,18 @@ export function ProductPage() {
                     <VStack align="start" spacing={3}>
                         <Heading size="sm">Ingredientes</Heading>
                         <Text>{product.ingredients}</Text>
-                        <Text><strong>Quantidade em mls:</strong> {product.quantity}</Text>
+                        <Text><strong>Quantidade:</strong> {product.quantity} mls</Text>
                         <Text color="red.700">{product.details}</Text>
                     </VStack>
                 </Box>
             )}
+            <SimpleGrid minChildWidth='sm' spacing='40px'>
+                {filteredData.map(product => (
+                    <Box key={product.id}>
+                        <Cards product={product}></Cards>
+                    </Box>
+                ))}
+            </SimpleGrid>
         </Box>
     );
 }

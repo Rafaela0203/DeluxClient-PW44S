@@ -23,8 +23,7 @@ export function Cards({ product }: { product: IProduct }) {
                         alt={product.name}
                         borderRadius="lg"
                         objectFit="cover"
-                        w="100%"
-                        h="200px"
+
                     />
                     <Stack mt='6' spacing='2'>
                         <Heading size='md' color="red.600">{product.brand}</Heading>

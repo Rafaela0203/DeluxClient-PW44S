@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {IProduct} from "@/commons/interfaces.ts";
 import ProductService from "@/service/ProductService.ts";
-import {Link} from "react-router-dom";
 import {Cards} from "@/components/Card";
 import {Box, Grid, GridItem, SimpleGrid} from "@chakra-ui/react";
 
