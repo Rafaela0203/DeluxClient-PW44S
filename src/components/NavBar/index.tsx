@@ -91,7 +91,9 @@ export function NavBar() {
                     <InputRightElement>
                         <IconButton
                             aria-label="Buscar"
-                            icon={<FaSearch color="red.300" />}
+                            icon={<FaSearch  />}
+                            color="red.600"
+                            variant="ghost"
                             onClick={handleSearch} // Chama a busca ao clicar no ícone
                         />
                     </InputRightElement>
@@ -126,11 +128,7 @@ export function NavBar() {
                         <MenuItem>Meus Pedidos</MenuItem>
                         <MenuItem>Endereços</MenuItem>
                         <MenuDivider />
-                        <MenuItem>
-                            <button onClick={onClickLogout}>
-                                Sair
-                            </button>
-                        </MenuItem>
+                        <MenuItem onClick={onClickLogout}>Sair</MenuItem>
                     </MenuList>
                 </Menu>
             </HStack>
