@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import  AuthService  from "@/service/AuthService";
 import  AddressService  from "@/service/AddressService";
@@ -11,8 +11,9 @@ import {
     Stack,
     Radio,
     Heading,
-    VStack
+    VStack, HStack, useRadioGroup
 } from "@chakra-ui/react";
+import {RadioCard} from "@/components/RadioCard";
 
 export function CheckoutPage() {
     const navigate = useNavigate();
@@ -45,20 +46,34 @@ export function CheckoutPage() {
         // Aqui você pode chamar um serviço para processar o pedido
     };
 
+    const options = ['react', 'vue', 'svelte']
+
+    const { getRootProps, getRadioProps } = useRadioGroup({
+        name: 'framework',
+        defaultValue: 'react',
+        onChange: console.log,
+    })
+
+    const group = getRootProps()
+
+
     return (
         <Box p={6} maxW="600px" mx="auto">
             <Heading mb={4}>Finalizar Compra</Heading>
 
             <FormControl mb={4}>
                 <FormLabel>Selecione um Endereço</FormLabel>
-                <RadioGroup onChange={setSelectedAddress} value={selectedAddress}>
-                    <Stack direction="column">
-                        {addresses.map((address) => (
-                            <Radio key={address.id} value={address.id}>{address.street}, {address.city}</Radio>
-                        ))}
-                    </Stack>
-                </RadioGroup>
-                <Button mt={2} colorScheme="blue" onClick={() => navigate("/address/new")}>Cadastrar Novo Endereço</Button>
+                <HStack {...group}>
+                    {options.map((value) => {
+                        const radio = getRadioProps({ value })
+                        return (
+                            <RadioCard key={value} {...radio}>
+                                {value}
+                            </RadioCard>
+                        )
+                    })}
+                </HStack>
+                <Button mt={2} colorScheme="blue" onClick={() => navigate("/address")}>Cadastrar Novo Endereço</Button>
             </FormControl>
 
             <FormControl mb={4}>
