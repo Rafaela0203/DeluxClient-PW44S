@@ -1,55 +1,37 @@
-import {
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogContent, AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogOverlay,
-    Button,
-    useToast
-} from "@chakra-ui/react";
+import { useState, useRef } from "react";
+import { useToast, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button } from "@chakra-ui/react";
 import { IProduct } from "@/commons/interfaces.ts";
-import React, {useState} from "react";
 
-interface IButtonAddToCart {
-    product: IProduct;
-}
-
-export function ButtonAddToCart({ product }: IButtonAddToCart) {
+export function AddToCart() {
     const [isOpen, setIsOpen] = useState(false);
     const onClose = () => setIsOpen(false);
-    const cancelRef = React.useRef<HTMLButtonElement | null>(null);
+    const cancelRef = useRef<HTMLButtonElement | null>(null);
     const toast = useToast();
 
     const addToCart = (product: IProduct) => {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-        const selectedProduct = cart.find(item => item.id === product.id);
-        if(selectedProduct) {
+        const selectedProduct = cart.find((item: IProduct) => item.id === product.id);
+        if (selectedProduct) {
             setIsOpen(true);
             return;
-        }else{
+        } else {
             cart.push(product);
             localStorage.setItem("cart", JSON.stringify(cart));
             toast({
                 title: "Produto adicionado",
                 description: "O produto foi adicionado ao carrinho.",
                 status: "success",
-                duration: 3000, // Tempo que a mensagem fica visível (em ms)
-                isClosable: true, // Permite fechar manualmente
-                position: "top-right", // Posição na tela
-            })
-            return;
+                duration: 3000,
+                isClosable: true,
+                position: "top-right",
+            });
         }
-
     };
 
-
-    return (
-        <>
-            <Button  color="white" bg="red.600" onClick={() => addToCart(product)}>
-                Comprar
-            </Button>
-
+    return {
+        addToCart,
+        alertDialog: (
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
@@ -63,6 +45,6 @@ export function ButtonAddToCart({ product }: IButtonAddToCart) {
                     </AlertDialogContent>
                 </AlertDialogOverlay>
             </AlertDialog>
-        </>
-    );
+        ),
+    };
 }

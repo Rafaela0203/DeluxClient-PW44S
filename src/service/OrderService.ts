@@ -7,9 +7,10 @@ const ORDERS_URL = "/orders";
 const getOrders = async (): Promise<any> => {
     try {
         const response = await api.get(ORDERS_URL);
-        return response;
+        return response.data;
     } catch (error: any) {
-        return error.response;
+        console.error("Erro ao buscar pedidos:", error);
+        return [];
     }
 };
 
