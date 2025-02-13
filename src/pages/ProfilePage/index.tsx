@@ -59,13 +59,18 @@ export function ProfilePage() {
     const loadOrders = async () => {
         try {
             const response = await OrderService.getOrders();
-            if (response) {
+            console.log("Pedidos recebidos da API:", response); // Adicione este log
+
+            if (response && Array.isArray(response)) {
                 setOrders(response);
+            } else {
+                console.error("Formato inesperado de pedidos:", response);
             }
         } catch (error) {
             console.error("Erro ao carregar pedidos:", error);
         }
     };
+
 
     const onClickRemoveAddress = async (id: number) => {
         try {
@@ -109,8 +114,8 @@ export function ProfilePage() {
                             <Box>
                                 <Text fontSize="lg" fontWeight="bold">Meus Endereços</Text>
                                 {addresses.length > 0 ? (
-                                    addresses.map((address) => (
-                                        <Box key={address.id} borderWidth="1px" borderRadius="lg" p={4} mt={2} display="flex" justifyContent="space-between" alignItems="center">
+                                    addresses.map((address, index) => (
+                                        <Box key={address.id || `address-${index}`} borderWidth="1px" borderRadius="lg" p={4} mt={2} display="flex" justifyContent="space-between" alignItems="center">
                                             <Box>
                                                 <Text><strong>Rua:</strong> {address.street}, {address.number}</Text>
                                                 <Text><strong>Bairro:</strong> {address.neighborhood}</Text>
@@ -139,11 +144,11 @@ export function ProfilePage() {
                             <Box>
                                 <Text fontSize="lg" fontWeight="bold">Meus Pedidos</Text>
                                 {orders.length > 0 ? (
-                                    orders.map((order) => (
-                                        <Box key={order.id} borderWidth="1px" borderRadius="lg" p={4} mt={2}>
+                                    orders.map((order, index) => (
+                                        <Box key={order.id || `order-${index}`} borderWidth="1px" borderRadius="lg" p={4} mt={2}>
                                             <Text><strong>Pedido #:</strong> {order.id}</Text>
-                                            <Text><strong>Data:</strong> {new Date(order.date).toLocaleDateString()}</Text>
-                                            <Text><strong>Status:</strong> {order.status}</Text>
+                                            <Text><strong>Data:</strong> {new Date(order.orderDate).toLocaleDateString()}</Text>
+                                            <Text><strong>Status:</strong> {order.shipping}</Text>
                                         </Box>
                                     ))
                                 ) : (

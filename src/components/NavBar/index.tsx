@@ -125,7 +125,7 @@ export function NavBar() {
                         zIndex="popover"
                     >
                         <NavLink to="/profile" className="nav-link"><MenuItem>Perfil</MenuItem></NavLink>
-                        <MenuItem>Meus Pedidos</MenuItem>
+                        <MenuItem>Favoritos</MenuItem>
                         <MenuItem>Endereços</MenuItem>
                         <MenuDivider />
                         <MenuItem onClick={onClickLogout}>Sair</MenuItem>
