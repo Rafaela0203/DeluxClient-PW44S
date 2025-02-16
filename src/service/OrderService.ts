@@ -4,7 +4,7 @@ import { IOrder } from "@/commons/interfaces.ts";
 const ORDERS_URL = "/orders";
 
 // Buscar todos os pedidos
-const getOrders = async (): Promise<any> => {
+const findAll = async (): Promise<any> => {
     try {
         const response = await api.get(ORDERS_URL);
         return response.data;
@@ -15,7 +15,7 @@ const getOrders = async (): Promise<any> => {
 };
 
 // Buscar um pedido pelo ID
-const getOrderById = async (id: number): Promise<any> => {
+const findById = async (id: number): Promise<any> => {
     try {
         const response = await api.get(`${ORDERS_URL}/${id}`);
         return response;
@@ -25,10 +25,11 @@ const getOrderById = async (id: number): Promise<any> => {
 };
 
 // Criar um novo pedido
-const createOrder = async (order: IOrder): Promise<any> => {
+const save = async (order: IOrder): Promise<any> => {
     try {
         const response = await api.post(ORDERS_URL, order);
         return response;
+
     } catch (error: any) {
         return error.response;
     }
@@ -36,9 +37,9 @@ const createOrder = async (order: IOrder): Promise<any> => {
 
 // Exportando apenas as funções de pedido
 const OrderService = {
-    getOrders,
-    getOrderById,
-    createOrder,
+    findAll,
+    findById,
+    save,
 };
 
 export default OrderService;

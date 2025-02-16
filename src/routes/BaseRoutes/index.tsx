@@ -6,7 +6,7 @@ import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
 import { ProductListPage } from "@/pages/ProductListPage";
 import { ProductPage } from "@/pages/ProductPage";
 import { CartPage } from "@/pages/CartPage";
-import { CheckoutPage } from "@/pages/CheckoutPage";
+import  CheckoutPage  from "@/pages/CheckoutPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { OrdersPlacedPage } from "@/pages/OrdersPlacedPage";
 import { AddressPage } from "@/pages/AddressPage";

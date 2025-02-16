@@ -57,10 +57,11 @@ export interface IProduct {
 
 export interface IOrder {
     id?: number;
-    address: IAddress;
+    address: { id: number };
     orderDate: string;
     payment: string;
     shipping: number;
+    itemsList: {product: {id: number}, quantity: number}[];
 }
 
 export interface IAddress {

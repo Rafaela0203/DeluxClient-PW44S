@@ -58,7 +58,7 @@ export function ProfilePage() {
 
     const loadOrders = async () => {
         try {
-            const response = await OrderService.getOrders();
+            const response = await OrderService.findAll();
             console.log("Pedidos recebidos da API:", response); // Adicione este log
 
             if (response && Array.isArray(response)) {
