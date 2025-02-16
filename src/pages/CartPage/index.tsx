@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { QuantityInput } from "@/components/QuantityInput";
 import { FaTrashAlt } from "react-icons/fa";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import AuthService from "@/service/AuthService.ts";
 
 export function CartPage() {
@@ -182,6 +182,13 @@ export function CartPage() {
                                 </Tfoot>
                             </Table>
                         </TableContainer>
+                        <Box p={'4'} align={'center'}>
+                            <NavLink to="/">
+                                <Button width="200px" colorScheme='red.600' variant='outline'>
+                                    Continuar comprando
+                                </Button>
+                            </NavLink>
+                        </Box>
                     </Box>
                 </Flex>
                 <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={() => setIsOpen(false)}>

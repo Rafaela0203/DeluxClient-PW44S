@@ -13,27 +13,66 @@ import {
     MenuButton,
     MenuDivider,
     MenuItem,
-    MenuList,
+    MenuList, useToast,
 } from "@chakra-ui/react";
 import { FaUser, FaSearch } from "react-icons/fa";
 import { FaCartShopping, FaHeart } from "react-icons/fa6";
 import "./index.css";
 import AuthService from "@/service/AuthService.ts";
 
+
 export function NavBar() {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState(""); // Estado para armazenar o termo de busca
+    const toast = useToast();
 
     const handleUserClick = () => {
         navigate("/login");
     };
 
-    const onClickLogout = () => {
-        AuthService.logout();
-        navigate("/login");
+    const handleCategoryClick = (categoryId: number) => {
+        navigate(`/products?categoryId=${categoryId}`);
     };
+
+    const onClickLogout = () => {
+
+        if (AuthService.isAuthenticated()) {
+            // Limpa o localStorage
+            localStorage.removeItem("cart");
+            localStorage.removeItem("favorites");
+            localStorage.removeItem("user");
+            localStorage.removeItem("profile");
+            localStorage.removeItem("redirectAfterLogin");
+            localStorage.clear();
+
+            // Faz logout e redireciona
+            AuthService.logout();
+            navigate("/login");
+
+            // Exibe a mensagem de logout
+            toast({
+                title: "Logout realizado",
+                description: "Você saiu da sua conta com sucesso.",
+                status: "info",
+                duration: 2000,
+                isClosable: true,
+                position: "top-right"
+            });
+        } else {
+            toast({
+                title: "Você não está logado!",
+                description: "Experimente logar em sua conta.",
+                status: "info",
+                duration: 2000,
+                isClosable: true,
+                position: "top-right"
+            });
+        }
+
+    };
+
 
     const handleSearch = () => {
         if (searchQuery.trim()) {
@@ -99,7 +138,7 @@ export function NavBar() {
                     </InputRightElement>
                 </InputGroup>
 
-                <NavLink to="/cart">
+                <NavLink to="/favs">
                     <IconButton aria-label="Heart" icon={<FaHeart />} variant="ghost" color="red.600" />
                 </NavLink>
 
