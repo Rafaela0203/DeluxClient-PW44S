@@ -3,6 +3,7 @@ export interface IUserSignup {
     email: string;
     name: string;
     password: string;
+    passwordRepeat: string;
     cpf: string;
     birthDate: string;
     gender: string;

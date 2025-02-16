@@ -8,8 +8,8 @@ import { ProductPage } from "@/pages/ProductPage";
 import { CartPage } from "@/pages/CartPage";
 import { CheckoutPage } from "@/pages/CheckoutPage";
 import { ProfilePage } from "@/pages/ProfilePage";
-import { OrdersPlacedPage } from "@/pages/OrdersPlacedPage";
 import { AddressPage } from "@/pages/AddressPage";
+import {FavoritesPage} from "@/pages/FavoritesPage";
 //import { NotFoundPage } from "@/pages/NotFoundPage";
 
 export function BaseRoutes() {
@@ -24,13 +24,14 @@ export function BaseRoutes() {
           <Route path="/products" element={<ProductListPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<CartPage />} />
-            <Route path="/address" element={<AddressPage />} />
+          <Route path="/address" element={<AddressPage />} />
 
           {/* Protected Routes */}
           <Route element={<AuthenticatedRoutes />}>
 
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/favs" element={<FavoritesPage />} />
             {/*<Route path="/orders" element={<OrdersPlacedPage />} />*/}
             {/*<Route path="/address" element={<AddressPage />} />*/}
           </Route>

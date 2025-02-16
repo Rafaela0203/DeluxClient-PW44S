@@ -32,6 +32,7 @@ export function ProfilePage() {
             const response = await UserService.getProfile();
             console.log("Resposta da API:", response.data);
 
+
             if (response.status === 200 && Array.isArray(response.data) && response.data.length > 0) {
                 setUser(response.data[0]); // Pega o primeiro usuário do array
             } else {

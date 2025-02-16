@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import "./index.css";
 import { IUserSignup } from "@/commons/interfaces.ts";
 import AuthService from "@/service/AuthService";
@@ -10,11 +10,13 @@ export function UserSignupPage() {
         email: "",
         name: "",
         password: "",
+        passwordRepeat: "",
         cpf: "",
         birthDate: "",
         gender: "",
         phone: "",
     });
+
     const [errors, setErrors] = useState({
         email: "",
         name: "",
@@ -24,10 +26,21 @@ export function UserSignupPage() {
         gender: "",
         phone: "",
     });
+
+    const [passwordRepeatError, setPasswordRepeatError] = useState(""); // Erro de confirmação de senha
     const [pendingApiCall, setPendingApiCall] = useState(false);
     const [apiError, setApiError] = useState(false);
     const [apiSuccess, setApiSuccess] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Validação automática da senha quando o usuário digitar
+        if (form.password || form.passwordRepeat) {
+            setPasswordRepeatError(
+                form.password === form.passwordRepeat ? "" : "As senhas devem ser iguais"
+            );
+        }
+    }, [form.password, form.passwordRepeat]);
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -36,6 +49,8 @@ export function UserSignupPage() {
     };
 
     const onClickSignup = async () => {
+        if (passwordRepeatError) return; // Impede o cadastro se as senhas não forem iguais
+
         setPendingApiCall(true);
         setApiError(false);
         const response = await AuthService.signup(form);
@@ -43,7 +58,6 @@ export function UserSignupPage() {
         if (response.status === 200 || response.status === 201) {
             setApiSuccess(true);
             setTimeout(() => navigate("/login"), 2000);
-
         } else {
             if (response.data.validationErrors) {
                 setErrors(response.data.validationErrors);
@@ -97,6 +111,19 @@ export function UserSignupPage() {
                     />
                     <label>Senha</label>
                     {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                </div>
+
+                <div className="form-floating">
+                    <input
+                        type="password"
+                        className={passwordRepeatError ? "form-control is-invalid" : "form-control"}
+                        placeholder="Confirme sua senha"
+                        name="passwordRepeat"
+                        onChange={onChange}
+                        value={form.passwordRepeat}
+                    />
+                    <label>Confirme sua senha</label>
+                    {passwordRepeatError && <div className="invalid-feedback">{passwordRepeatError}</div>}
                 </div>
 
                 <div className="form-floating">
@@ -155,7 +182,7 @@ export function UserSignupPage() {
 
                 <div className="text-center">
                     <ButtonWithProgress
-                        disabled={pendingApiCall}
+                        disabled={pendingApiCall || passwordRepeatError ? true : false}
                         pendingApiCall={pendingApiCall}
                         className="w-100 btn btn-lg mb-3"
                         text="Cadastrar"

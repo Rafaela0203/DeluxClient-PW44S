@@ -1,54 +1,53 @@
-import {api} from "@/lib/axios.ts";
-import {ICategory} from "@/commons/interfaces.ts";
+import { api } from "@/lib/axios.ts";
+import { ICategory } from "@/commons/interfaces.ts";
 
 const CATEGORY_URL = "/categories";
 
-const findAll = async (): Promise<any> => {
-    let response;
-
-    try{
-        response = await api.get(CATEGORY_URL);
-    }catch (error: any){
-        response = error.response;
+const findAll = async (): Promise<ICategory[]> => {
+    try {
+        const response = await api.get<ICategory[]>(CATEGORY_URL);
+        return response.data; // Retorna apenas os dados das categorias
+    } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+        return []; // Retorna um array vazio em caso de erro
     }
-    return response;
 };
 
-const remove = async (id: number): Promise<any> => {
-    let response;
+const findById = async (id: number): Promise<ICategory | null> => {
     try {
-        response = await api.delete(`${CATEGORY_URL}/${id}`);
-    }catch (error: any){
-        response = error.response;
+        const response = await api.get<ICategory>(`${CATEGORY_URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Erro ao buscar categoria com ID ${id}:`, error);
+        return null; // Retorna null caso ocorra um erro
     }
-    return response;
-}
+};
 
-const save = async (category : ICategory): Promise<any> => {
-    let response;
+const save = async (category: ICategory): Promise<boolean> => {
     try {
-        response = await api.post(CATEGORY_URL, category);
-    } catch (error: any) {
-        response = error.response;
+        await api.post(CATEGORY_URL, category);
+        return true; // Retorna sucesso
+    } catch (error) {
+        console.error("Erro ao salvar categoria:", error);
+        return false; // Retorna falso caso falhe
     }
-    return response;
-}
+};
 
-const findById = async (id: number): Promise<any> => {
-    let response;
+const remove = async (id: number): Promise<boolean> => {
     try {
-        response = await api.get(`${CATEGORY_URL}/${id}`);
-    }catch (error: any) {
-        response = error.response;
+        await api.delete(`${CATEGORY_URL}/${id}`);
+        return true; // Retorna sucesso
+    } catch (error) {
+        console.error(`Erro ao remover categoria com ID ${id}:`, error);
+        return false; // Retorna falso caso falhe
     }
-    return response;
-}
+};
 
 const CategoryService = {
     findAll,
-    remove,
-    save,
     findById,
+    save,
+    remove,
 };
 
 export default CategoryService;
