@@ -45,25 +45,6 @@ const CheckoutPage = () => {
     };
 
     const loadAddresses = async () => {
-        // For testing, use fixed addresses instead of calling AddressService.findAll()
-        // const testAddresses: Address[] = [
-        //     {
-        //         id: 1,
-        //         street: "123 Testing Lane",
-        //         city: "Testville",
-        //         state: "TS",
-        //         zip: "12345",
-        //     },
-        //     {
-        //         id: 2,
-        //         street: "456 Demo Road",
-        //         city: "Demoville",
-        //         state: "DM",
-        //         zip: "67890",
-        //     },
-        // ];
-        // setAddresses(testAddresses);
-
         try {
             const response = await AddressService.findAll();
             if (response) {
