@@ -3,13 +3,13 @@ import { ICategory } from "@/commons/interfaces.ts";
 
 const CATEGORY_URL = "/categories";
 
-const findAll = async (): Promise<ICategory[]> => {
+const findAll = async (): Promise<any> => {
     try {
-        const response = await api.get<ICategory[]>(CATEGORY_URL);
-        return response.data; // Retorna apenas os dados das categorias
-    } catch (error) {
+        const response = await api.get(CATEGORY_URL);
+        return response;
+    } catch (error: any) {
         console.error("Erro ao buscar categorias:", error);
-        return []; // Retorna um array vazio em caso de erro
+        return { status: 500, data: [] }; // Retorna um array vazio em caso de erro
     }
 };
 

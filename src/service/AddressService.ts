@@ -4,14 +4,16 @@ import { IAddress } from "@/commons/interfaces.ts";
 const ADDRESS_URL = "/addresses";
 
 // Buscar todos os endereços
-const findAll = async (): Promise<IAddress[] | undefined> => {
+const findAll = async (): Promise<any> => {
+    let response;
     try {
-        const response = await api.get(ADDRESS_URL);
-        return response.data; // Retorna a lista de endereços
-    } catch (error) {
+        response = await api.get(ADDRESS_URL);
+    } catch (error: any) {
         console.error("Erro ao buscar endereços:", error);
-        return undefined; // Retorna undefined em caso de erro
+        response = error.response; // Retorna undefined em caso de erro
     }
+    return response; // Retorna a lista de endereços
+
 };
 
 // Salvar um novo endereço
