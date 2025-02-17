@@ -54,15 +54,15 @@ const findByCategory = async (categoryId: number): Promise<any> => {
     return response;
 }
 
-const findByName = async (name: string): Promise<any> => {
+const findByName = async (name: string): Promise<IProduct[]> => {
     try {
-        return await api.get(`/products?search=${encodeURIComponent(name)}`);
+        const response = await api.get(`/products?search=${encodeURIComponent(name)}`);
+        return response.data; // Retorna apenas os dados
     } catch (error) {
         console.error("Erro ao buscar produtos:", error);
-        return undefined;
+        return []; // Retorna um array vazio em caso de erro
     }
 };
-
 
 const ProductService = {
     findAll,

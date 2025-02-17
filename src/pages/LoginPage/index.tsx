@@ -98,7 +98,7 @@ export function LoginPage() {
             </form>
             <div className="text-center">
                 Ainda não possui cadastro?
-                <Link className="link-primary" to="/signup">Cadastrar-se</Link>
+                <Link className="link-primary" to="/signup"> Cadastrar-se</Link>
             </div>
         </main>
     );
