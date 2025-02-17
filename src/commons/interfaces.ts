@@ -1,8 +1,8 @@
-
 export interface IUserSignup {
     email: string;
     name: string;
     password: string;
+    passwordRepeat: string;
     cpf: string;
     birthDate: string;
     gender: string;
@@ -57,7 +57,7 @@ export interface IProduct {
 
 export interface IOrder {
     id?: number;
-    address: { id: number };
+    addressId: number;
     orderDate: string;
     payment: string;
     shipping: number;

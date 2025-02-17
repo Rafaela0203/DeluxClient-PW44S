@@ -15,13 +15,13 @@ export function LoginPage() {
     const [apiSuccess, setApiSuccess] = useState(false);
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if (AuthService.isAuthenticated()) {
-    //         const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
-    //         localStorage.removeItem("redirectAfterLogin");
-    //         navigate(redirectPath);
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (AuthService.isAuthenticated()) {
+            const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
+            localStorage.removeItem("redirectAfterLogin");
+            navigate(redirectPath);
+        }
+    }, []);
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;

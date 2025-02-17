@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import AddressService from "@/service/AddressService";
 import OrderService from "@/service/OrderService"; // Import your order service
-import { useNavigate } from "react-router-dom"; //Adjust the path if needed
+import { useNavigate } from "react-router-dom";
+import { IOrder } from "@/commons/interfaces.ts"; // Adjust the path if needed
 
 interface Address {
     id: number;
@@ -21,7 +21,9 @@ const CheckoutPage = () => {
 
     // Shipping states
     const [shippingCost, setShippingCost] = useState<number | null>(null);
-    const [shippingCostMessage, setShippingCostMessage] = useState<string | null>(null);
+    const [shippingCostMessage, setShippingCostMessage] = useState<string | null>(
+        null
+    );
 
     const navigate = useNavigate();
 
@@ -29,87 +31,43 @@ const CheckoutPage = () => {
         loadAddresses();
     }, []);
 
-    // When addresses or selectedAddress change, recalc shipping cost
+    // Recalculate shipping whenever the selected address changes
     useEffect(() => {
         calcShipping();
     }, [selectedAddress, addresses]);
 
     const calcShipping = async () => {
-        if (selectedAddress !== null && addresses.length > 0) {
-            // Find the selected address in the list
-            const addr = addresses.find((a) => a.id === selectedAddress);
-            if (!addr) return;
-
-            // Prepare the shipment data
-            const shipmentData = {
-                from: {
-                    postal_code: "85501560", // Fixed origin postal code
-                },
-                to: {
-                    postal_code: addr.zip, // Use selected address zip code
-                },
-                products: [
-                    {
-                        id: "x",
-                        width: 11,
-                        height: 17,
-                        length: 11,
-                        weight: 0.3,
-                        insurance_value: 10.1,
-                        quantity: 1,
-                    },
-                ],
-                options: {
-                    receipt: false,
-                    own_hand: false,
-                },
-                services: "1,2,18",
-            };
-
-            // try {
-            //     const result = await  AddressService.calculateShipment(shipmentData);
-            //     if (result && Array.isArray(result) && result.length > 0) {
-            //         // Build a message showing available shipping options
-            //         let message = "";
-            //         if (result[0] && result[0].price) {
-            //             message += `PAC: ${result[0].price}`;
-            //         }
-            //         if (result[1] && result[1].price) {
-            //             message += ` | SEDEX: ${result[1].price}`;
-            //         }
-            //         setShippingCostMessage(message);
-            //         // Use one of the calculated prices (for example, PAC) as the shipping cost value
-            //         if (result[0] && result[0].price) {
-            //             setShippingCost(parseFloat(result[0].price));
-            //         }
-            //     } else {
-            //         setShippingCostMessage("Frete indisponível");
-            //         setShippingCost(null);
-            //     }
-            // } catch (error) {
-            //     console.error("Error calculating shipping:", error);
-            //     setShippingCostMessage("Erro ao calcular o frete");
-            //     setShippingCost(null);
-        //     }
-        }
-            setShippingCostMessage("Fixo para teste");
-            setShippingCost(19);
+        // For testing, we’re using fixed shipping cost values.
+        // (In your real implementation, you can uncomment your API call logic.)
+        setShippingCostMessage("Fixo para teste");
+        setShippingCost(19);
     };
 
     const loadAddresses = async () => {
-        try {
-            const response = await AddressService.findAll();
-            if (response) {
-                setAddresses(response);
-            }
-        } catch (error) {
-            console.error("Erro ao carregar endereços:", error);
-        }
+        // For testing, use fixed addresses instead of calling AddressService.findAll()
+        const testAddresses: Address[] = [
+            {
+                id: 1,
+                street: "123 Testing Lane",
+                city: "Testville",
+                state: "TS",
+                zip: "12345",
+            },
+            {
+                id: 2,
+                street: "456 Demo Road",
+                city: "Demoville",
+                state: "DM",
+                zip: "67890",
+            },
+        ];
+        setAddresses(testAddresses);
     };
 
     const handleSelectAddress = (id: number) => {
         setSelectedAddress(id);
-        console.log(selectedAddress)
+        // Log the selected address ID immediately (use the passed id, not the state)
+        console.log("Selected address id:", id);
     };
 
     const handleFinishOrder = async () => {
@@ -118,13 +76,6 @@ const CheckoutPage = () => {
             return;
         }
 
-        // Ensure a shipping cost was calculated
-        // if (shippingCost === null) {
-        //     alert("Shipping cost has not been calculated yet or is unavailable.");
-        //     return;
-        // }
-
-        // Retrieve cart items from localStorage (adjust the key if necessary)
         const cartString = localStorage.getItem("cart");
         if (!cartString) {
             alert("No items in cart.");
@@ -137,19 +88,24 @@ const CheckoutPage = () => {
             return;
         }
 
-        // Map cart items to the order items structure
+        // Adjust orderItems to match your working JSON (using "productId" as key)
         const orderItems = cartItems.map((item: any) => ({
-            product: { id: item.id }, // Assumes each item has an "id" property
+            productId: { id: item.id },
             quantity: item.quantity,
         }));
 
-        // Use the calculated shipping cost instead of a constant
-        const order = {
+        // Build the order payload based on your working sample
+        const order: IOrder = {
+            // If your API requires a user field, you can add it here:
             shipping: 19,
-            payment: paymentMethod,
-            address: { id: selectedAddress },
-            items: orderItems,
+            // Format payment method to uppercase with underscore if needed (e.g., "CREDIT_CARD")
+            payment: paymentMethod.toUpperCase().replace(" ", "_"),
+            addressId: selectedAddress ,
+            orderDate: new Date().toISOString(),
+            itemsList: orderItems,
         };
+
+        console.log("Order being sent:", JSON.stringify(order, null, 2));
 
         setPendingOrder(true);
         setOrderError(null);
@@ -159,10 +115,8 @@ const CheckoutPage = () => {
             const response = await OrderService.save(order);
             if (response.status === 200 || response.status === 201) {
                 setOrderSuccess("Order placed successfully!");
-                // Optionally clear the cart after a successful order
                 localStorage.removeItem("cart");
-                // Navigate to an order confirmation page (adjust the route and state as needed)
-                navigate("/user#tab3", { state: { order: response.data } });
+                navigate("/", { state: { order: response.data } });
             } else {
                 setOrderError("Failed to place order. Please try again.");
             }
@@ -241,12 +195,18 @@ const CheckoutPage = () => {
             )}
 
             {/* Finish Order Button */}
-            <button className="btn btn-info btn-lg" onClick={handleFinishOrder} disabled={pendingOrder}>
+            <button
+                className="btn btn-info btn-lg"
+                onClick={handleFinishOrder}
+                disabled={pendingOrder}
+            >
                 {pendingOrder ? "Placing Order..." : "Finish Order"}
             </button>
 
             {orderError && <div className="alert alert-danger mt-3">{orderError}</div>}
-            {orderSuccess && <div className="alert alert-success mt-3">{orderSuccess}</div>}
+            {orderSuccess && (
+                <div className="alert alert-success mt-3">{orderSuccess}</div>
+            )}
         </main>
     );
 };
