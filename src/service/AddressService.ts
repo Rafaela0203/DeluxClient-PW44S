@@ -6,7 +6,7 @@ const ADDRESS_URL = "/addresses";
 // Buscar todos os endereços
 const findAll = async (): Promise<IAddress[] | undefined> => {
     try {
-        const response = await api.get(ADDRESS_URL);
+        const response = await api.get(`${ADDRESS_URL}/by-user`);
         return response.data; // Retorna a lista de endereços
     } catch (error) {
         console.error("Erro ao buscar endereços:", error);
