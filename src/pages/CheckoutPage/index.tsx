@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import OrderService from "@/service/OrderService"; // Import your order service
 import { useNavigate } from "react-router-dom";
-import { IOrder } from "@/commons/interfaces.ts"; // Adjust the path if needed
+import { IOrder} from "@/commons/interfaces.ts";
+import AddressService from "@/service/AddressService.ts"; // Adjust the path if needed
 
 interface Address {
     id: number;
@@ -45,26 +46,35 @@ const CheckoutPage = () => {
 
     const loadAddresses = async () => {
         // For testing, use fixed addresses instead of calling AddressService.findAll()
-        const testAddresses: Address[] = [
-            {
-                id: 1,
-                street: "123 Testing Lane",
-                city: "Testville",
-                state: "TS",
-                zip: "12345",
-            },
-            {
-                id: 2,
-                street: "456 Demo Road",
-                city: "Demoville",
-                state: "DM",
-                zip: "67890",
-            },
-        ];
-        setAddresses(testAddresses);
+        // const testAddresses: Address[] = [
+        //     {
+        //         id: 1,
+        //         street: "123 Testing Lane",
+        //         city: "Testville",
+        //         state: "TS",
+        //         zip: "12345",
+        //     },
+        //     {
+        //         id: 2,
+        //         street: "456 Demo Road",
+        //         city: "Demoville",
+        //         state: "DM",
+        //         zip: "67890",
+        //     },
+        // ];
+        // setAddresses(testAddresses);
+
+        try {
+            const response = await AddressService.findAll();
+            if (response) {
+                setAddresses(response);
+            }
+        } catch (error) {
+            console.error("Erro ao carregar endereços:", error);
+        }
     };
 
-    const handleSelectAddress = (id: number) => {
+    const handleSelectAddress = (id: number | undefined) => {
         setSelectedAddress(id);
         // Log the selected address ID immediately (use the passed id, not the state)
         console.log("Selected address id:", id);
@@ -101,7 +111,6 @@ const CheckoutPage = () => {
             // Format payment method to uppercase with underscore if needed (e.g., "CREDIT_CARD")
             payment: paymentMethod.toUpperCase().replace(" ", "_"),
             addressId: selectedAddress ,
-            orderDate: new Date().toISOString(),
             itemsList: orderItems,
         };
 

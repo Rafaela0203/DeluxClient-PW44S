@@ -58,7 +58,6 @@ export interface IProduct {
 export interface IOrder {
     id?: number;
     addressId: number;
-    orderDate: string;
     payment: string;
     shipping: number;
     itemsList: {product: {id: number}, quantity: number}[];
