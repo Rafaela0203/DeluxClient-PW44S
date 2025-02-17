@@ -32,6 +32,10 @@ export function NavBar() {
         navigate("/login");
     };
 
+    const handleCategoryClick = (categoryId: number) => {
+        navigate(`/products?categoryId=${categoryId}`);
+    };
+
     const onClickLogout = () => {
 
         if (AuthService.isAuthenticated()) {
