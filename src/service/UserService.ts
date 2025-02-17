@@ -5,14 +5,11 @@ const USERS_URL = "/users";
 
 const getProfile = async (): Promise<any> => {
     try {
-        return await api.get(`${USERS_URL}`, {
-            headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
-        });
+        return await api.get(`${USERS_URL}`);
     } catch (error: any) {
         return error.response;
     }
 };
-
 
 const updateUser = async (user: IUserSignup): Promise<any> => {
     try {
